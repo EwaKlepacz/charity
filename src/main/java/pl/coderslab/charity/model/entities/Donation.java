@@ -32,7 +32,7 @@ public class Donation {
         this.categories = categories;
         this.institution = institution;
         this.street = street;
-        City = city;
+        this.City = city;
         this.zipCode = zipCode;
         this.pickUpDate = pickUpDate;
         this.pickUpTime = pickUpTime;
