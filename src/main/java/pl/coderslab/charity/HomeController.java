@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.coderslab.charity.model.entities.Category;
 import pl.coderslab.charity.model.entities.Institution;
 import pl.coderslab.charity.model.repositories.CategoryRepository;
 import pl.coderslab.charity.model.repositories.DonationRepository;
@@ -28,6 +29,11 @@ public class HomeController {
 public  List<Institution> institutions () {
 
     return institutionRepostiory.findAll();
+}
+
+@ModelAttribute("categories")
+public List<Category> categories () {
+        return categoryRepository.findAll();
 }
 
 @ModelAttribute("donationQuantity")
