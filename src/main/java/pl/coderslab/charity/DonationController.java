@@ -1,14 +1,20 @@
-package pl.coderslab.charity.web;
+package pl.coderslab.charity;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.charity.model.entities.Category;
 import pl.coderslab.charity.model.entities.Donation;
+import pl.coderslab.charity.model.entities.Institution;
 import pl.coderslab.charity.model.repositories.CategoryRepository;
 import pl.coderslab.charity.model.repositories.DonationRepository;
 import pl.coderslab.charity.model.repositories.InstitutionRepostiory;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @Controller
+@RequestMapping("/form")
 
 public class DonationController {
 
@@ -22,14 +28,29 @@ public class DonationController {
         this.institutionRepostiory = institutionRepostiory;
     }
 
-    @RequestMapping("/form")
 
-        public String form (Model model) {
-          model.addAttribute("categories", categoryRepository.findAll());
-          model.addAttribute("institutions", institutionRepostiory.findAll());
-                return "form";
+    @ModelAttribute("institutions")
+    public List<Institution> institutions() {
+        return institutionRepostiory.findAll();
+    }
+
+    @ModelAttribute("categories")
+    public List<Category> categories() {
+        return categoryRepository.findAll();
+    }
+
+
+@GetMapping
+    public String prepareForm(Model model) {
+        Donation donation = new Donation();
+        model.addAttribute("donation", donation);
+        return "form";
+    }
+
+  @PostMapping
+    public String procesForm(@Valid Donation donation) {
+        donationRepository.save(donation);
+        return "redirect:/";
     }
 }
-
-
 

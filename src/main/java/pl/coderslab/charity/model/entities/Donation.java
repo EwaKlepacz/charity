@@ -23,7 +23,7 @@ public class Donation {
     @ManyToOne
     private Institution institution;
     private String street;
-    private String City;
+    private String city;
     private String zipCode;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate pickUpDate;
@@ -35,7 +35,7 @@ public class Donation {
         this.categories = categories;
         this.institution = institution;
         this.street = street;
-        this.City = city;
+        this.city = city;
         this.zipCode = zipCode;
         this.pickUpDate = pickUpDate;
         this.pickUpTime = pickUpTime;
@@ -87,11 +87,11 @@ public class Donation {
     }
 
     public String getCity() {
-        return City;
+        return city;
     }
 
     public void setCity(String city) {
-        City = city;
+        city = city;
     }
 
     public String getZipCode() {
@@ -147,7 +147,7 @@ public class Donation {
                 ", categories=" + categories +
                 ", institution=" + institution +
                 ", street='" + street + '\'' +
-                ", City='" + City + '\'' +
+                ", City='" + city + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", pickUpDate=" + pickUpDate +
                 ", pickUpTime=" + pickUpTime +

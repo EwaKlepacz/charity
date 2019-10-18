@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="pl">
@@ -11,7 +13,36 @@
     <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>"/>
 </head>
 <body>
-<c:import url="header.jsp"/>
+<header class="header--main-page" id="start">
+    <%@include file="header.jsp" %>
+
+    <div class="slogan container container--90">
+        <div class="slogan--item">
+            <h1>
+                Oddaj rzeczy, których już nie chcesz<br/>
+                <span class="uppercase">potrzebującym</span>
+            </h1>
+
+            <div class="slogan--steps">
+                <div class="slogan--steps-title">Wystarczą 4 proste kroki:</div>
+                <ul class="slogan--steps-boxes">
+                    <li>
+                        <div><em>1</em><span>Wybierz rzeczy</span></div>
+                    </li>
+                    <li>
+                        <div><em>2</em><span>Spakuj je w worki</span></div>
+                    </li>
+                    <li>
+                        <div><em>3</em><span>Wybierz fundację</span></div>
+                    </li>
+                    <li>
+                        <div><em>4</em><span>Zamów kuriera</span></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
 
 <section class="form--steps">
     <div class="form--steps-instructions">
@@ -35,24 +66,16 @@
 
     <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
-        <form:form action="/form" method="post">
-
+        <form:form method="post" modelAttribute="donation">
             <!-- STEP 1: class .active is switching steps -->
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
-
                 <c:forEach items="${categories}" var="category">
                     <div class="form-group form-group--checkbox">
                         <label>
-                            <input
-                                    type="checkbox"
-                                    name="categories"
-                                    value="clothes-to-use"
-                            />
+                            <input type="checkbox" name="categories" data-name="${category.name}" value="${category.id}"/>
                             <span class="checkbox"></span>
-                            <span class="description">
-                                    ${category.name}
-                            </span>
+                            <span class="description"> ${category.name}</span>
                         </label>
                     </div>
                 </c:forEach>
@@ -69,7 +92,8 @@
                 <div class="form-group form-group--inline">
                     <label>
                         Liczba 60l worków:
-                        <input type="number" name="bags" step="1" min="1"/>
+                        <form:input path="quantity"/>
+<%--                        <form:input path="quantity" type="number"  step="1" min="1" />--%>
                     </label>
                 </div>
 
@@ -83,20 +107,22 @@
             <!-- STEP 4 -->
             <div data-step="3">
                 <h3>Wybierz organizacje, której chcesz pomóc:</h3>
+
                 <c:forEach items="${institutions}" var="institution">
+                    <div class="form-group form-group--checkbox">
+                        <label>
+                            <form:radiobutton path="institution" value="${institution.id}" data-name="${institution.name}"/>
+                            <span class="checkbox radio"></span>
+                            <span class="description">
+                  <div class="title">${institution.name}</div>
+                  <div class="subtitle">
+                          ${institution.description}
+                  </div>
+                </span>
+                        </label>
+                    </div>
+                </c:forEach>
 
-                <div class="form-group form-group--checkbox">
-                    <label>
-                        <input type="radio" name="organization" value="old"/>
-                        <span class="checkbox radio"></span>
-                        <span class="description">
-                        <div class="title">"${institution.name}"</div>
-                        <div class="subtitle">Cel i misja: ${institution.description}.</div>
-                        </span>
-                    </label>
-                </div>
-
-                 </c:forEach>
                 <div class="form-group form-group--buttons">
                     <button type="button" class="btn prev-step">Wstecz</button>
                     <button type="button" class="btn next-step">Dalej</button>
@@ -106,45 +132,43 @@
             <!-- STEP 5 -->
             <div data-step="4">
                 <h3>Podaj adres oraz termin odbioru rzecz przez kuriera:</h3>
-
                 <div class="form-section form-section--columns">
                     <div class="form-section--column">
                         <h4>Adres odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Ulica <input type="text" name="address"/> </label>
+                            <label> Ulica <form:input id="street" path="street"/> </label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Miasto <input type="text" name="city"/> </label>
-                        </div>
-
-                        <div class="form-group form-group--inline">
-                            <label>
-                                Kod pocztowy <input type="text" name="postcode"/>
-                            </label>
+                            <label> Miasto <form:input id="city" path="city"/></label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Numer telefonu <input type="phone" name="phone"/>
+                                Kod pocztowy <form:input id="zip-ccode" pattern="([0-9]{2}-[0-9]{3})" type="text"
+                                                         path="zipCode"/>
                             </label>
                         </div>
+                            <%--                        <div class="form-group form-group--inline">--%>
+                            <%--                            <label>--%>
+                            <%--                                Numer telefonu <input type="phone" name="phone"/>--%>
+                            <%--                            </label>--%>
+                            <%--                        </div>--%>
                     </div>
 
                     <div class="form-section--column">
                         <h4>Termin odbioru</h4>
                         <div class="form-group form-group--inline">
-                            <label> Data <input type="date" name="data"/> </label>
+                            <label> Data <form:input id="date" type="date" path="pickUpDate"/></label>
                         </div>
 
                         <div class="form-group form-group--inline">
-                            <label> Godzina <input type="time" name="time"/> </label>
+                            <label> Godzina <form:input id="time" type="time" path="pickUpTime"/></label>
                         </div>
 
                         <div class="form-group form-group--inline">
                             <label>
-                                Uwagi dla kuriera
-                                <textarea name="more_info" rows="5"></textarea>
+                                Uwagi dla kuriera <form:textarea id="comment" path="pickUpComment"/>
                             </label>
                         </div>
                     </div>
@@ -165,15 +189,15 @@
                         <ul>
                             <li>
                                 <span class="icon icon-bag"></span>
-                                <span class="summary--text"
-                                >4 worki ubrań w dobrym stanie dla dzieci</span
+                                <span class="summary--text" id="bags-categories"
+                                ></span
                                 >
                             </li>
 
                             <li>
                                 <span class="icon icon-hand"></span>
-                                <span class="summary--text"
-                                >Dla fundacji "Mam marzenie" w Warszawie</span
+                                <span class="summary--text" id="institution-name"
+                                ></span
                                 >
                             </li>
                         </ul>
@@ -183,19 +207,14 @@
                         <div class="form-section--column">
                             <h4>Adres odbioru:</h4>
                             <ul>
-                                <li>Prosta 51</li>
-                                <li>Warszawa</li>
-                                <li>99-098</li>
-                                <li>123 456 789</li>
+                                <div id="pick-up-place"></div>
                             </ul>
                         </div>
 
                         <div class="form-section--column">
                             <h4>Termin odbioru:</h4>
                             <ul>
-                                <li>13/12/2018</li>
-                                <li>15:40</li>
-                                <li>Brak uwag</li>
+                                <div id="pick-up-ddate"></div>
                             </ul>
                         </div>
                     </div>
@@ -209,7 +228,8 @@
         </form:form>
     </div>
 </section>
-<c:import url="footer.jsp"/>
+<%@include file="footer.jsp" %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="<c:url value="/resources/js/app.js"/>"></script>
 </body>
 </html>

@@ -16,7 +16,7 @@
 <section class="stats">
     <div class="container container--85">
         <div class="stats--item">
-            <em>${donationQuantity}</em>
+            <em>${quantity}</em>
 
             <h3>Oddanych worków</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum
@@ -67,7 +67,7 @@
     <h2>O nas</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas vitae animi rem pariatur incidunt libero
         optio esse quisquam illo omnis.</p>
-    <img src="/resources/images/signature.svg" class="about-us--text-signature" alt="Signature"/>
+    <img src="<c:url value="/resources/images/signature.svg"/>" class="about-us--text-signature" alt="Signature"/>
 </div>
 <div class="about-us--image"><img src="<c:url value="/resources/images/about-us.jpg"/>" alt="People in circle"/>
     </div>

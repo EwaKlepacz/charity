@@ -36,7 +36,7 @@ public List<Category> categories () {
         return categoryRepository.findAll();
 }
 
-@ModelAttribute("donationQuantity")
+@ModelAttribute("quantity")
 
 public int donationQuantity () {
         return donationRepository.amountQuantity();
