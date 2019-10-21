@@ -6,4 +6,6 @@ import pl.coderslab.charity.model.entities.Category;
 
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+    class RoleRepostiory {
+    }
 }
