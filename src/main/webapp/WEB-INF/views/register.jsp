@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Registration form</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>"/>
 </head>
 <body>
 <%@include file="header.jsp"%>
@@ -18,7 +18,7 @@
     <h2>Załóż konto</h2>
     <form:form method="post" modelAttribute="user">
         <div class="form-group">
-            <form:input type="text" name="text" path="username" placeholder="Email" />
+            <form:input type="text" name="text" path="username" placeholder="User" />
         </div>
         <div class="form-group">
             <form:input type="password" name="password"  path="password" placeholder="Hasło" />
