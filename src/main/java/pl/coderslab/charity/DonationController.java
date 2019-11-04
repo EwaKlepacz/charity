@@ -52,5 +52,8 @@ public class DonationController {
         donationRepository.save(donation);
         return "redirect:/";
     }
+
+    public static class AdminController {
+    }
 }
 

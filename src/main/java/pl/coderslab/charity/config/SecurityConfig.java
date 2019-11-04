@@ -37,7 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder())
                 .dataSource(dataSource)
                 .usersByUsernameQuery("SELECT username, password, true FROM users WHERE username = ?")
-                .authoritiesByUsernameQuery("SELECT username, 'ROLE_USER' FROM users WHERE username = ?");
+                .authoritiesByUsernameQuery("SELECT username, name FROM users join user_role on users.id = user_role.user_id "
+                        +"join role on user_role.role_id = role.id where username=?");
     }
 
 
@@ -51,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
        .antMatchers("/registration").permitAll()
       .anyRequest().authenticated()
       .and().formLogin().loginPage("/login").permitAll()
-      .defaultSuccessUrl("/form")
+      .defaultSuccessUrl("/admin")
       .and().logout().logoutSuccessUrl("/")
       .and()
       .csrf().disable();
