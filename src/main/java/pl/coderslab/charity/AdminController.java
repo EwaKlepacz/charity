@@ -89,5 +89,36 @@ public class AdminController {
 }
 
 //Institutions ... miejsce na zarządzanie instytucjami
+    @GetMapping({"admin/institution/add", "admin/institution/edit"})
+    public String prepareManageInstitutionPage (@RequestParam (required = false)Long id, Model model){
+        Institution institution = new Institution();
+        if (id != null) {
+            institution = institutionRepostiory.findById(id).orElse(new Institution());
+                    }
+        model.addAttribute("institution", institution);
+        return "admin/institution/manage";
+    }
+    @PostMapping({"admin/institution/add", "admin/institution/edit"})
+    public String processManageInstitutionPage (Institution institution) {
+        institutionRepostiory.save(institution);
+        return "redirect:/admin";
+    }
+
+@GetMapping({"/admin/institution/remove"})
+    public String prepareInstitutionRemovePage (Long id, Model model){
+    if (id != null) {
+        Institution institution = institutionRepostiory.findById(id).orElse(new Institution());
+        model.addAttribute("institutionToRemove", institution);
+        return "admin/institution/remove";
+    }
+    return "redirect:/admin";
+}
+@PostMapping({"admin/institution/remove"})
+public String processRemoveInstitutionPage (Institution institution) {
+    institution = institutionRepostiory.findById(institution.getId()).orElse(new Institution());
+        institutionRepostiory.delete(institution);
+        return "redirect:/admin";
+
+}
 }
 

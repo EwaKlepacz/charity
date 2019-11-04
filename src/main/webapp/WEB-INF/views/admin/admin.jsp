@@ -31,7 +31,7 @@
 
 <section class="login-page">
     <sec:authorize access="hasRole('ADMIN')">
-        MAM ROLE ADMIN
+        Jestem adminem
     </sec:authorize>
     <h2>Dla Admina</h2>
 
